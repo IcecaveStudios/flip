@@ -1,11 +1,14 @@
 {
     "name": "icecave/flip",
-    "description": "Simple, strict, explicit boolean options.",
+    "description": "A tiny library for working with strict sets of boolean values.",
     "keywords": [
         "flag",
         "option",
         "bit",
-        "boolean"
+        "boolean",
+        "set",
+        "enum",
+        "field"
     ],
     "homepage": "https://github.com/IcecaveStudios/flip",
     "license": "MIT",
@@ -17,13 +20,10 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
-        "icecave/isolator": "~2",
-        "eloquent/enumeration": "^5"
+        "php": ">=5.5"
     },
     "require-dev": {
-        "icecave/archer": "~1",
-        "eloquent/phony": "^0.3"
+        "icecave/archer": "~1"
     },
     "autoload": {
         "psr-4": {

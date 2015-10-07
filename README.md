@@ -11,8 +11,7 @@
 [semantic versioning]: http://semver.org/
 [version-image]: http://img.shields.io/:semver-0.0.0-red.svg?style=flat-square "This project uses semantic versioning"
 
-**Flip** is a simple PHP library for accepting sets of boolean options as input
-to functions.
+**Flip** is a tiny PHP library for working with strict sets of boolean values.
 
 - Install via [Composer] package [icecave/flip]
 - Read the [API documentation]
@@ -21,62 +20,95 @@ to functions.
 [composer]: http://getcomposer.org/
 [icecave/flip]: https://packagist.org/packages/icecave/flip
 
-## Example
+## Defining an option-set
 
-First the valid options are defined by declaring a class that extends from
-`AbstractOptions`.
+An option-set describes the available options of a given type. Option-sets are
+defined by declaring a class that uses the `OptionSetTrait` trait.
+
+Each property in the class defines a named option that be set to true or false.
+All properties must be private and have a default boolean value.
 
 ```php
-use Icecave\Flip\AbstractOptions;
+use Icecave\Flip\OptionSetTrait;
 
-final class MyOptions extends AbstractOptions
+final class ExampleOptions extends AbstractOption
 {
-    const FOO = 'foo';
-    const BAR = 'bar';
+    use OptionSetTrait;
+
+    private $foo = true;
+    private $bar = false;
+    private $baz = false;
 }
 ```
 
-Functions that accept the options use the `build()` method to create an
-`OptionCollection` that holds the state of the passed options.
+## Creating an option-set
+
+The option-set trait provides the following static methods for quickly creating
+common sets:
+
+* `defaults()` - creates an option-set where all options are set to the default values
+* `all()` - creates an option-set where all options are set to `true`
+* `none()` - creates an option-set where all options are set to `false`
+
+Option-sets can also be created and modified using a fluent interface. The
+example below creates an option-set with only the `bar` and `baz` properties set
+to `true`.
 
 ```php
-function printOptions(array $options)
-{
-    $options = MyOptions::build($options);
+$options = ExampleOptions::none()
+    ->bar(true)
+    ->baz(true);
+```
 
-    if ($options[MyOptions::FOO()]) {
+Omitting the initial call to `defaults()`, `all()` or `none()` is short-hand
+for using the defaults. This means that the following two examples are equivalent:
+
+```php
+$options = ExampleOptions::defaults()
+    ->foo(false)
+    ->bar(true);
+```
+
+```php
+$options = ExampleOptions
+    ::foo(false)
+    ->bar(true);
+```
+
+Options can not be named "defaults", "all" or "none".
+
+## Using an option-set
+
+**Functions that accept option-sets as parameters can use a type-hint.** Options are
+read using the regular PHP property notation. Option values are guaranteed to
+be a boolean.
+
+```php
+function dumpOptions(ExampleOptions $options)
+{
+    if ($options->foo) {
         echo 'Foo is enabled!';
     } else {
         echo 'Foo is disabled!';
     }
 
-    if ($options[MyOptions::BAR()]) {
+    if ($options->bar) {
         echo 'Bar is enabled!';
     } else {
         echo 'Bar is disabled!';
     }
+
+    if ($options->baz) {
+        echo 'Baz is enabled!';
+    } else {
+        echo 'Baz is disabled!';
+    }
 }
 ```
 
-When calling the function, options are passed as an array mapping the option
-value to a boolean.
-
-```php
-$options = [
-    MyOptions::FOO => true,
-];
-
-printOptions($options);
-```
-
-Which will output:
-```console
-Foo is enabled!
-Bar is disabled!
-```
-
-An `InvalidArgumentException` is thrown if the options array passed to `build()`
-contains keys that are not defined in the `MyOptions` class.
+Note that option-sets are immutable, and as such it is not possible to set
+options using the property notation. Instead, change the option-set using the
+fluent notation described above.
 
 ## Contact us
 

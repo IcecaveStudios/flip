@@ -1,18 +1,12 @@
 <?php
 namespace Icecave\Flip;
 
-final class TestOptions extends AbstractOptions
+final class TestOptions
 {
-    const FOO = 'foo';
-    const BAR = 'bar';
-    const BAZ = 'baz';
-    const QUX = 'qux';
+    use OptionSetTrait;
 
-    public static function defaults()
-    {
-        return [
-            self::FOO => true,
-            self::BAZ => false,
-        ];
-    }
+    private $foo = true;
+    private $bar = false;
+    private $baz = true;
+    private $qux = false;
 }
