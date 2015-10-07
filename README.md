@@ -75,6 +75,9 @@ $options = ExampleOptions
     ->bar(true);
 ```
 
+Option-sets are immutable, each call to the fluent interface returns a new
+instance with the updated option value.
+
 Options can not be named "defaults", "all" or "none".
 
 ## Using an option-set
@@ -106,9 +109,7 @@ function dumpOptions(ExampleOptions $options)
 }
 ```
 
-Note that option-sets are immutable, and as such it is not possible to set
-options using the property notation. Instead, change the option-set using the
-fluent notation described above.
+It is not possible to set options using the property notation.
 
 ## Contact us
 
