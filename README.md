@@ -25,8 +25,8 @@
 An option-set describes the available options of a given type. Option-sets are
 defined by declaring a class that uses the `OptionSetTrait` trait.
 
-Each property in the class defines a named option that be set to true or false.
-All properties must be private and have a default boolean value.
+Each property in the class defines a named option that be set to `true` or
+`false`. All properties must be private and have a default boolean value.
 
 ```php
 use Icecave\Flip\OptionSetTrait;
