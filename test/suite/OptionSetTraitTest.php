@@ -131,4 +131,12 @@ class OptionSetTraitTest extends PHPUnit_Framework_TestCase
 
         TestOptionsWithSameNameAsMethod::defaults();
     }
+
+    public function testToString()
+    {
+        $this->assertSame(
+            '[foo, baz]',
+            strval(TestOptions::defaults())
+        );
+    }
 }

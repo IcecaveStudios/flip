@@ -141,6 +141,24 @@ trait OptionSetTrait
     }
 
     /**
+     * Get a string representation of the option set.
+     */
+    public function __toString()
+    {
+        $parts = [];
+
+        foreach (get_object_vars($this) as $option => $value) {
+            if ($value) {
+                $parts[] = $option;
+            }
+        }
+
+        return '[' . implode(', ', $parts) . ']';
+    }
+
+    /**
+     * @access private
+     *
      * Prevent setting of arbitrary options.
      *
      * @param string  $name  The option name.
