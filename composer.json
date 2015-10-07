@@ -1,0 +1,38 @@
+{
+    "name": "icecave/flip",
+    "description": "Simple, strict, explicit boolean options.",
+    "keywords": [
+        "flag",
+        "option",
+        "bit",
+        "boolean"
+    ],
+    "homepage": "https://github.com/IcecaveStudios/flip",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Harris",
+            "email": "james.harris@icecave.com.au",
+            "homepage": "https://github.com/jmalloc"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "icecave/isolator": "~2",
+        "eloquent/enumeration": "^5"
+    },
+    "require-dev": {
+        "icecave/archer": "~1",
+        "eloquent/phony": "^0.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icecave\\Flip\\": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.1.x-dev"
+        }
+    }
+}
