@@ -31,7 +31,7 @@ Each property in the class defines a named option that be set to `true` or
 ```php
 use Icecave\Flip\OptionSetTrait;
 
-final class ExampleOptions extends AbstractOption
+final class ExampleOptions
 {
     use OptionSetTrait;
 
