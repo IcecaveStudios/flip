@@ -1,6 +1,6 @@
 # Flip
 
-[![The most recent stable version is 0.1.0][version-image]][semantic versioning]
+[![The most recent stable version is 0.2.0][version-image]][semantic versioning]
 [![Current build status image][build-image]][current build status]
 [![Current coverage status image][coverage-image]][current coverage status]
 
@@ -9,7 +9,7 @@
 [coverage-image]: https://img.shields.io/codecov/c/github/IcecaveStudios/flip/develop.svg?style=flat-square "Current test coverage for the develop branch"
 [current coverage status]: https://coveralls.io/r/IcecaveStudios/flip
 [semantic versioning]: http://semver.org/
-[version-image]: http://img.shields.io/:semver-0.1.0-yellow.svg?style=flat-square "This project uses semantic versioning"
+[version-image]: http://img.shields.io/:semver-0.2.0-yellow.svg?style=flat-square "This project uses semantic versioning"
 
 **Flip** is a tiny PHP library for working with strict sets of boolean flags.
 
