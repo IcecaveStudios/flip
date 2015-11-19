@@ -1,9 +1,10 @@
 <?php
+
 namespace Icecave\Flip;
 
-final class TestOptions
+final class TestFlags
 {
-    use OptionSetTrait;
+    use FlagSetTrait;
 
     private $foo = true;
     private $bar = false;

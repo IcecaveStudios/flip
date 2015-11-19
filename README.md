@@ -11,7 +11,7 @@
 [semantic versioning]: http://semver.org/
 [version-image]: http://img.shields.io/:semver-0.1.0-yellow.svg?style=flat-square "This project uses semantic versioning"
 
-**Flip** is a tiny PHP library for working with strict sets of boolean values.
+**Flip** is a tiny PHP library for working with strict sets of boolean flags.
 
 - Install via [Composer] package [icecave/flip]
 - Read the [API documentation]
@@ -20,20 +20,20 @@
 [composer]: http://getcomposer.org/
 [icecave/flip]: https://packagist.org/packages/icecave/flip
 
-## Defining an option-set
+## Defining a flag-set
 
-An option-set describes the available options of a given type. Option-sets are
-defined by declaring a class that uses the `OptionSetTrait` trait.
+A flag-set describes the available flags of a given type. Flag-sets are defined
+by declaring a class that uses the `FlagSetTrait` trait.
 
-Each property in the class defines a named option that can be set to `true` or
+Each property in the class defines a named flag that can be set to `true` or
 `false`. All properties must be private and have a default boolean value.
 
 ```php
-use Icecave\Flip\OptionSetTrait;
+use Icecave\Flip\FlagSetTrait;
 
-final class ExampleOptions
+final class ExampleFlags
 {
-    use OptionSetTrait;
+    use FlagSetTrait;
 
     private $foo = true;
     private $bar = false;
@@ -41,21 +41,20 @@ final class ExampleOptions
 }
 ```
 
-## Creating an option-set
+## Creating a flag-set
 
-The option-set trait provides the following static methods for quickly creating
+The flag-set trait provides the following static methods for quickly creating
 common sets:
 
-* `defaults()` - creates an option-set where all options are set to the default values
-* `all()` - creates an option-set where all options are set to `true`
-* `none()` - creates an option-set where all options are set to `false`
+* `defaults()` - creates a flag-set where all flags are set to the default values
+* `all()` - creates a flag-set where all flags are set to `true`
+* `none()` - creates a flag-set where all flags are set to `false`
 
-Option-sets can also be created and modified using a fluent interface. The
-example below creates an option-set with only the `bar` and `baz` properties set
-to `true`.
+Flag-sets can also be created and modified using a fluent interface. The example
+below creates a flag-set with only the `bar` and `baz` properties set to `true`.
 
 ```php
-$options = ExampleOptions::none()
+$flags = ExampleFlags::none()
     ->bar(true)
     ->baz(true);
 ```
@@ -64,44 +63,44 @@ Omitting the initial call to `defaults()`, `all()` or `none()` is short-hand
 for using the defaults. This means that the following two examples are equivalent:
 
 ```php
-$options = ExampleOptions::defaults()
+$flags = ExampleFlags::defaults()
     ->foo(false)
     ->bar(true);
 ```
 
 ```php
-$options = ExampleOptions
+$flags = ExampleFlags
     ::foo(false)
     ->bar(true);
 ```
 
-Option-sets are immutable, each call to the fluent interface returns a new
-instance with the updated option value.
+Flag-sets are immutable, each call to the fluent interface returns a new
+instance with the updated flag value.
 
-Options can not be named "defaults", "all" or "none".
+Flags can not be named "defaults", "all" or "none".
 
-## Using an option-set
+## Using a flag-set
 
-**Functions that accept option-sets as parameters can use a type-hint.** Options are
-read using the regular PHP property notation. Option values are guaranteed to
-be a boolean.
+**Functions that accept flag-sets as parameters can use a type-hint.** Flags are
+read using the regular PHP property notation. Flag values are guaranteed to be a
+boolean.
 
 ```php
-function dumpOptions(ExampleOptions $options)
+function dumpFlags(ExampleFlags $flags)
 {
-    if ($options->foo) {
+    if ($flags->foo) {
         echo 'Foo is enabled!';
     } else {
         echo 'Foo is disabled!';
     }
 
-    if ($options->bar) {
+    if ($flags->bar) {
         echo 'Bar is enabled!';
     } else {
         echo 'Bar is disabled!';
     }
 
-    if ($options->baz) {
+    if ($flags->baz) {
         echo 'Baz is enabled!';
     } else {
         echo 'Baz is disabled!';
@@ -109,7 +108,7 @@ function dumpOptions(ExampleOptions $options)
 }
 ```
 
-It is not possible to set options using the property notation.
+It is not possible to set flags using the property notation.
 
 ## Contact us
 

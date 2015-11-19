@@ -1,17 +1,18 @@
 <?php
+
 namespace Icecave\Flip;
 
 use LogicException;
 use ReflectionClass;
 
 /**
- * Option-sets are immutable value objects that contain a pre-defined set of
+ * Flag-sets are immutable value objects that contain a pre-defined set of
  * boolean properties.
  */
-trait OptionSetTrait
+trait FlagSetTrait
 {
     /**
-     * Create an option-set with default values.
+     * Create a flag-set with default values.
      *
      * @return self
      */
@@ -25,112 +26,112 @@ trait OptionSetTrait
     }
 
     /**
-     * Create an option-set with all options set to true.
+     * Create a flag-set with all flags set to true.
      *
      * @return self
      */
     public static function all()
     {
         if (null === self::$__all) {
-            $options = new self();
+            $flags = new self();
 
-            foreach (self::$__options as $option) {
-                $options->{$option} = true;
+            foreach (self::$__flags as $flag) {
+                $flags->{$flag} = true;
             }
 
-            self::$__all = $options;
+            self::$__all = $flags;
         }
 
         return self::$__all;
     }
 
     /**
-     * Create an option-set with all options set to false.
+     * Create a flag-set with all flags set to false.
      *
      * @return self
      */
     public static function none()
     {
         if (null === self::$__none) {
-            $options = new self();
+            $flags = new self();
 
-            foreach (self::$__options as $option) {
-                $options->{$option} = false;
+            foreach (self::$__flags as $flag) {
+                $flags->{$flag} = false;
             }
 
-            self::$__none = $options;
+            self::$__none = $flags;
         }
 
         return self::$__none;
     }
 
     /**
-     * Create an option-set by changing a specific option in the default option-set.
+     * Create a flag-set by changing a specific flag in the default flag-set.
      *
-     * @param string         $name      The option name.
-     * @param tuple<boolean> $arguments A 1-tuple containing the option value.
+     * @param string         $name      The flag name.
+     * @param tuple<boolean> $arguments A 1-tuple containing the flag value.
      *
      * @return self
      */
     public static function __callStatic($name, array $arguments)
     {
-        $options = new self();
+        $flags = new self();
 
-        if (!isset(self::$__options[$name])) {
+        if (!isset(self::$__flags[$name])) {
             throw new LogicException(
                 sprintf(
-                    'The option-set %s does not have an option named "%s".',
+                    'The flag-set %s does not have a flag named "%s".',
                     static::class,
                     $name
                 )
             );
         }
 
-        $options->{$name} = isset($arguments[0]) && $arguments[0];
+        $flags->{$name} = isset($arguments[0]) && $arguments[0];
 
-        return $options;
+        return $flags;
     }
 
     /**
-     * Create an option-set by changing a specific option in this option-set.
+     * Create a flag-set by changing a specific flag in this flag-set.
      *
-     * @param string         $name      The option name.
-     * @param tuple<boolean> $arguments A 1-tuple containing the option value.
+     * @param string         $name      The flag name.
+     * @param tuple<boolean> $arguments A 1-tuple containing the flag value.
      *
      * @return self
      */
     public function __call($name, array $arguments)
     {
-        if (!isset(self::$__options[$name])) {
+        if (!isset(self::$__flags[$name])) {
             throw new LogicException(
                 sprintf(
-                    'The option-set %s does not have an option named "%s".',
+                    'The flag-set %s does not have a flag named "%s".',
                     get_class($this),
                     $name
                 )
             );
         }
 
-        $options = clone $this;
-        $options->{$name} = isset($arguments[0]) && $arguments[0];
+        $flags = clone $this;
+        $flags->{$name} = isset($arguments[0]) && $arguments[0];
 
-        return $options;
+        return $flags;
     }
 
     /**
-     * Get the value of an option.
+     * Get the value of a flag.
      *
-     * @param string $name The option name.
+     * @param string $name The flag name.
      *
-     * @return boolean        The option value.
-     * @throws LogicException if the option does not exist.
+     * @return boolean        The flag value.
+     * @throws LogicException if the flag does not exist.
      */
     public function __get($name)
     {
-        if (!isset(self::$__options[$name])) {
+        if (!isset(self::$__flags[$name])) {
             throw new LogicException(
                 sprintf(
-                    'The option-set %s does not have an option named "%s".',
+                    'The flag-set %s does not have a flag named "%s".',
                     get_class($this),
                     $name
                 )
@@ -141,15 +142,15 @@ trait OptionSetTrait
     }
 
     /**
-     * Get a string representation of the option set.
+     * Get a string representation of the flag set.
      */
     public function __toString()
     {
         $parts = [];
 
-        foreach (get_object_vars($this) as $option => $value) {
+        foreach (get_object_vars($this) as $flag => $value) {
             if ($value) {
-                $parts[] = $option;
+                $parts[] = $flag;
             }
         }
 
@@ -159,23 +160,23 @@ trait OptionSetTrait
     /**
      * @access private
      *
-     * Prevent setting of arbitrary options.
+     * Prevent setting of arbitrary flags.
      *
-     * @param string  $name  The option name.
-     * @param boolean $value The option value.
+     * @param string  $name  The flag name.
+     * @param boolean $value The flag value.
      *
      * @throws LogicException under all circumstances.
      */
     public function __set($name, $value)
     {
-        throw new LogicException('Option-sets are immutable.');
+        throw new LogicException('Flag-sets are immutable.');
     }
 
     private function __construct()
     {
-        if (null === self::$__options) {
+        if (null === self::$__flags) {
             $reflector = new ReflectionClass($this);
-            $options = [];
+            $flags = [];
 
             foreach ($reflector->getProperties() as $property) {
                 $property->setAccessible(true);
@@ -185,7 +186,7 @@ trait OptionSetTrait
                 } elseif (!$property->isPrivate()) {
                     throw new LogicException(
                         sprintf(
-                            'The option-set %s declares non-private property "%s". All properties must be private with boolean values.',
+                            'The flag-set %s declares non-private property "%s". All properties must be private with boolean values.',
                             get_class($this),
                             $property->getName()
                         )
@@ -193,7 +194,7 @@ trait OptionSetTrait
                 } elseif (!is_bool($property->getValue($this))) {
                     throw new LogicException(
                         sprintf(
-                            'The option-set %s declares non-boolean property "%s". All properties must be private with boolean values.',
+                            'The flag-set %s declares non-boolean property "%s". All properties must be private with boolean values.',
                             get_class($this),
                             $property->getName()
                         )
@@ -201,21 +202,21 @@ trait OptionSetTrait
                 } elseif ($reflector->hasMethod($property->getName())) {
                     throw new LogicException(
                         sprintf(
-                            'The option-set %s declares property with reserved name "%s".',
+                            'The flag-set %s declares property with reserved name "%s".',
                             get_class($this),
                             $property->getName()
                         )
                     );
                 }
 
-                $options[$property->getName()] = $property->getName();
+                $flags[$property->getName()] = $property->getName();
             }
 
-            self::$__options = $options;
+            self::$__flags = $flags;
         }
     }
 
-    private static $__options;
+    private static $__flags;
     private static $__defaults;
     private static $__none;
     private static $__all;
