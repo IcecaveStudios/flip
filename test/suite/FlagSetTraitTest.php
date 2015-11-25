@@ -140,4 +140,142 @@ class FlagSetTraitTest extends PHPUnit_Framework_TestCase
             strval(TestFlags::defaults())
         );
     }
+
+    public function testDiff()
+    {
+        $defaults = TestFlags::defaults();
+
+        // diff to same
+        $flags = $defaults->diff(
+            TestFlags::defaults()
+        );
+        $this->assertFalse($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertFalse($flags->baz);
+        $this->assertFalse($flags->qux);
+
+        // diff to all
+        $flags = $defaults->diff(
+            TestFlags::all()
+        );
+        $this->assertFalse($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertFalse($flags->baz);
+        $this->assertFalse($flags->qux);
+
+        // diff to none
+        $flags = $defaults->diff(
+            TestFlags::none()
+        );
+        $this->assertTrue($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertTrue($flags->baz);
+        $this->assertFalse($flags->qux);
+    }
+
+    public function testSymmetricDiff()
+    {
+        $defaults = TestFlags::defaults();
+
+        // symmetric diff to same
+        $flags = $defaults->symmetricDiff(
+            TestFlags::defaults()
+        );
+        $this->assertFalse($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertFalse($flags->baz);
+        $this->assertFalse($flags->qux);
+
+        // symmetric diff to all
+        $flags = $defaults->symmetricDiff(
+            TestFlags::all()
+        );
+        $this->assertFalse($flags->foo);
+        $this->assertTrue($flags->bar);
+        $this->assertFalse($flags->baz);
+        $this->assertTrue($flags->qux);
+
+        // symmetric diff to none
+        $flags = $defaults->symmetricDiff(
+            TestFlags::none()
+        );
+        $this->assertTrue($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertTrue($flags->baz);
+        $this->assertFalse($flags->qux);
+    }
+
+    public function testIntersect()
+    {
+        $defaults = TestFlags::defaults();
+
+        // intersect to same
+        $flags = $defaults->intersect(
+            TestFlags::defaults()
+        );
+        $this->assertTrue($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertTrue($flags->baz);
+        $this->assertFalse($flags->qux);
+
+        // intersect to all
+        $flags = $defaults->intersect(
+            TestFlags::all()
+        );
+        $this->assertTrue($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertTrue($flags->baz);
+        $this->assertFalse($flags->qux);
+
+        // intersect to none
+        $flags = $defaults->intersect(
+            TestFlags::none()
+        );
+        $this->assertFalse($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertFalse($flags->baz);
+        $this->assertFalse($flags->qux);
+    }
+
+    public function testUnion()
+    {
+        $defaults = TestFlags::defaults();
+
+        // union to same
+        $flags = $defaults->union(
+            TestFlags::defaults()
+        );
+        $this->assertTrue($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertTrue($flags->baz);
+        $this->assertFalse($flags->qux);
+
+        // union to all
+        $flags = $defaults->union(
+            TestFlags::all()
+        );
+        $this->assertTrue($flags->foo);
+        $this->assertTrue($flags->bar);
+        $this->assertTrue($flags->baz);
+        $this->assertTrue($flags->qux);
+
+        // union to none
+        $flags = $defaults->union(
+            TestFlags::none()
+        );
+        $this->assertTrue($flags->foo);
+        $this->assertFalse($flags->bar);
+        $this->assertTrue($flags->baz);
+        $this->assertFalse($flags->qux);
+    }
+
+    public function testInverse()
+    {
+        $flags = TestFlags::defaults()->inverse();
+
+        $this->assertFalse($flags->foo);
+        $this->assertTrue($flags->bar);
+        $this->assertFalse($flags->baz);
+        $this->assertTrue($flags->qux);
+    }
 }
