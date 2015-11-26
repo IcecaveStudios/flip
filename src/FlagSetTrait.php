@@ -143,6 +143,8 @@ trait FlagSetTrait
 
     /**
      * Get a string representation of the flag set.
+     *
+     * @return string The string representation.
      */
     public function __toString()
     {
@@ -170,6 +172,89 @@ trait FlagSetTrait
     public function __set($name, $value)
     {
         throw new LogicException('Flag-sets are immutable.');
+    }
+
+    /**
+     * Compute the difference of flag-sets.
+     *
+     * @param self $other The other flag set to compare to.
+     *
+     * @return self A flag-set of the flags in $this and not in $other.
+     */
+    public function diff(self $other)
+    {
+        $result = new self();
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} && !$other->{$flag};
+        }
+
+        return $result;
+    }
+
+    /**
+     * Compute the symmetric difference of flag-sets.
+     *
+     * @param self $other The other flag set to compare to.
+     *
+     * @return self A flag-set of the flags in $this and not in $other, and vice versa.
+     */
+    public function symmetricDiff(self $other)
+    {
+        $result = new self();
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} !== $other->{$flag};
+        }
+
+        return $result;
+    }
+
+    /**
+     * Compute the intersection of flag-sets.
+     *
+     * @param self $other The other flag set to intersect with.
+     *
+     * @return self A flag-set of the flags in $this and $other.
+     */
+    public function intersect(self $other)
+    {
+        $result = new self();
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} && $other->{$flag};
+        }
+
+        return $result;
+    }
+
+    /**
+     * Compute the union of flag-sets.
+     *
+     * @param self $other The other flag set to union with.
+     *
+     * @return self A flag-set of the flags in $this or $other.
+     */
+    public function union(self $other)
+    {
+        $result = new self();
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} || $other->{$flag};
+        }
+
+        return $result;
+    }
+
+    /**
+     * Compute the inverse of this flag set.
+     *
+     * @return self The inverse of the flags in this flag-set.
+     */
+    public function inverse()
+    {
+        $result = new self();
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = !$this->{$flag};
+        }
+
+        return $result;
     }
 
     private function __construct()
