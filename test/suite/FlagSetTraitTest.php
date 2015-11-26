@@ -147,7 +147,7 @@ class FlagSetTraitTest extends PHPUnit_Framework_TestCase
 
         // diff to same
         $flags = $defaults->diff(
-            TestFlags::defaults()
+            $defaults
         );
         $this->assertFalse($flags->foo);
         $this->assertFalse($flags->bar);
@@ -179,7 +179,7 @@ class FlagSetTraitTest extends PHPUnit_Framework_TestCase
 
         // symmetric diff to same
         $flags = $defaults->symmetricDiff(
-            TestFlags::defaults()
+            $defaults
         );
         $this->assertFalse($flags->foo);
         $this->assertFalse($flags->bar);
@@ -211,7 +211,7 @@ class FlagSetTraitTest extends PHPUnit_Framework_TestCase
 
         // intersect to same
         $flags = $defaults->intersect(
-            TestFlags::defaults()
+            $defaults
         );
         $this->assertTrue($flags->foo);
         $this->assertFalse($flags->bar);
@@ -243,7 +243,7 @@ class FlagSetTraitTest extends PHPUnit_Framework_TestCase
 
         // union to same
         $flags = $defaults->union(
-            TestFlags::defaults()
+            $defaults
         );
         $this->assertTrue($flags->foo);
         $this->assertFalse($flags->bar);

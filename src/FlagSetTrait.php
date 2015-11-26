@@ -177,18 +177,15 @@ trait FlagSetTrait
     /**
      * Compute the difference of flag-sets.
      *
-     * A flag-set of the flags in $this and not in $other.
-     *
      * @param self $other The other flag set to compare to.
      *
-     * @return self
+     * @return self A flag-set of the flags in $this and not in $other.
      */
     public function diff(self $other)
     {
         $result = new self();
-        foreach (get_object_vars($this) as $flag => $value) {
-            $otherValue = $other->{$flag};
-            $result->{$flag} = ($value && !$otherValue);
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} && !$other->{$flag};
         }
 
         return $result;
@@ -197,18 +194,15 @@ trait FlagSetTrait
     /**
      * Compute the symmetric difference of flag-sets.
      *
-     * A flag-set of the flags in $this and not in $other, and vice versa.
-     *
      * @param self $other The other flag set to compare to.
      *
-     * @return self
+     * @return self A flag-set of the flags in $this and not in $other, and vice versa.
      */
     public function symmetricDiff(self $other)
     {
         $result = new self();
-        foreach (get_object_vars($this) as $flag => $value) {
-            $otherValue = $other->{$flag};
-            $result->{$flag} = ($value !== $otherValue);
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} !== $other->{$flag};
         }
 
         return $result;
@@ -217,18 +211,15 @@ trait FlagSetTrait
     /**
      * Compute the intersection of flag-sets.
      *
-     * A flag-set of the flags in $this and $other.
-     *
      * @param self $other The other flag set to intersect with.
      *
-     * @return self
+     * @return self A flag-set of the flags in $this and $other.
      */
     public function intersect(self $other)
     {
         $result = new self();
-        foreach (get_object_vars($this) as $flag => $value) {
-            $otherValue = $other->{$flag};
-            $result->{$flag} = ($value && $otherValue);
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} && $other->{$flag};
         }
 
         return $result;
@@ -237,18 +228,15 @@ trait FlagSetTrait
     /**
      * Compute the union of flag-sets.
      *
-     * A flag-set of the true flags in $this or $other.
-     *
      * @param self $other The other flag set to union with.
      *
-     * @return self
+     * @return self A flag-set of the flags in $this or $other.
      */
     public function union(self $other)
     {
         $result = new self();
-        foreach (get_object_vars($this) as $flag => $value) {
-            $otherValue = $other->{$flag};
-            $result->{$flag} = ($value || $otherValue);
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = $this->{$flag} || $other->{$flag};
         }
 
         return $result;
@@ -257,15 +245,13 @@ trait FlagSetTrait
     /**
      * Compute the inverse of this flag set.
      *
-     * The inverse of the flags in this flag-set.
-     *
-     * @return self
+     * @return self The inverse of the flags in this flag-set.
      */
     public function inverse()
     {
         $result = new self();
-        foreach (get_object_vars($this) as $flag => $value) {
-            $result->{$flag} = !$value;
+        foreach (self::$__flags as $flag) {
+            $result->{$flag} = !$this->{$flag};
         }
 
         return $result;
